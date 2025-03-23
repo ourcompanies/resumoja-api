@@ -40,17 +40,17 @@ Formato da resposta:
     });
 
     let resposta = completion.choices[0].message.content;
+    console.log("🧠 Resposta bruta da IA:\n", resposta); // <-- Vai aparecer no log do Vercel
 
-    // Tenta extrair JSON da resposta
     const jsonMatch = resposta.match(/{[.\s\S]+}/);
     if (jsonMatch) {
-      resposta = JSON.parse(jsonMatch[0]);
-      res.send(resposta);
+      const data = JSON.parse(jsonMatch[0]);
+      res.send(data);
     } else {
       res.status(500).send({ erro: "Resposta da IA não está no formato esperado." });
     }
   } catch (err) {
-    console.error("Erro ao chamar OpenAI ou processar resposta:", err);
+    console.error("❌ Erro ao chamar OpenAI:", err);
     res.status(500).send({ erro: "Erro ao gerar análise com IA" });
   }
 });
